@@ -13,14 +13,10 @@ app.get('/api/v1/episodes', function(req, res){
     res.json(data.episodes)
 })
 app.get('/api/v1/episodes/name', function(req, res){
-    const name = data.episodes.find(name)
-    // let pulledName = episodes.name
-    // for (let i = 0; i < episodes.length; i+= episodes){
-    //     if (episodes[i] == true)
-    //     pulledName++
-    // }
-    // const pulledName = episodes.map(({key, value}) => ({[key]: value}))
-    res.json(name)
+    const pulledName = episodes.map(({name}) => {
+        return name
+    })
+    res.json(pulledName)
   
 })
 app.get('/api/v1/episodes/:episodeID', function(req, res){
