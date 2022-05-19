@@ -1,61 +1,80 @@
 const http = require('http');
 const express = require('express')
-const data = require('./data')
-
-//config variable
+const data = require('./data');
+const { episodes } = require('./data');
 const hostname = '127.0.0.1';
 const port = 3000;
-
-//create express app
 const app = express()
-
-//create http server and handle request with express app
 const server = http.createServer(app)
 
-//local static files from public folder before other routes
 app.use(express.static('./public'))
 
-
-//register index route handler
-app.get('/', function(req, res){
-    res.send('Hello World!')
+app.get('/api/v1/episodes', function(req, res){
+    res.json(data.episodes)
 })
-
-//handle the about page
-app.get('/about', function(req, res){
-    res.send('About Page')
+app.get('/api/v1/episodes/name', function(req, res){
+    const name = data.episodes.find(name)
+    // let pulledName = episodes.name
+    // for (let i = 0; i < episodes.length; i+= episodes){
+    //     if (episodes[i] == true)
+    //     pulledName++
+    // }
+    // const pulledName = episodes.map(({key, value}) => ({[key]: value}))
+    res.json(name)
+  
 })
-app.get('/api/v1/pets', function(req, res){
-   
-    res.json(data.pets)
-})
-app.get('/api/v1/pets/:petID', function(req, res){
-    //get pet id from route param
-    const petID = req.params.petID
-    let pet = null
-    for (let currentPet of data.pets){
-        if (currentPet.id == petID){
-            pet = currentPet
+app.get('/api/v1/episodes/:episodeID', function(req, res){
+    //get episode id from route param
+    const episodeID = req.params.episodeID
+    let episode = null
+    for (let currentEpisode of data.episodes){
+        if (currentEpisode.id == episodeID){
+            episode = currentEpisode
         }
     }
-    if (pet !== null){
-    res.json(pet)
+    if (episode !== null){
+    res.json(episode)
     } else{
-        res.status(404).json({error: 'could not find pet with id: ' + petID})
+        res.status(404).json({error: 'could not find episode with id: ' + episodeID})
+    }
+})
+//Route with a route parameter
+//name
+app.get('/api/v1/episodes/name/:episodeName', function(req, res){
+    const episodeName = req.params.episodeName
+    let episode = null
+    for (let currentEpisode of data.episodes){
+        if (currentEpisode.name == episodeName){
+            episode = currentEpisode
+        }
+    }
+    if (episode !== null){
+    res.json(episode)
+    } else{
+        res.status(404).json({error: 'could not find episode with the name of: ' + episodeName})
+    }
+})
+// season
+app.get('/api/v1/episodes/season/:seasonNum', function(req, res){
+    const seasonNum = req.params.seasonNum
+    let episode = null
+    for (let currentEpisode of data.episodes){
+        if (currentEpisode.season == seasonNum){
+            episode = currentEpisode
+        }
+    }
+    if (episode !== null){
+    res.json(episode)
+    } else{
+        res.status(404).json({error: 'could not find season? with the name of: ' + seasonNum})
     }
 })
 
-//Route with a route parameter
-app.get('/pet/:petName', function(req, res){
-    res.send(`Pet: ${req.params.petName}`)
-})
-app.get('/greet/:name', function(req, res){
-    res.send(`<h1>Hello, ${req.params.name}!</h1>`)
-})
+
 
 //catch any missing pages
 app.get('*', function(req, res){
-    res.send('Page not found')
+    res.send('Testing and trying still bro')
 })
 
 

@@ -1,18 +1,18 @@
 console.log('hello')
-fetch('/api/v1/pets')
+fetch('/api/v1/episodes')
 .then (res => res.json())
 .then(data =>{
     console.log(data)
-    renderPets(data)
+    renderEpisodes(data)
     
 })
-function renderPets (pets){
-    const petsList = document.querySelector('#pets')
-    const petHtml = pets.map(pet =>{
+function renderEpisodes (episodes){
+    const episodesList = document.querySelector('#episodes')
+    const episodeHtml = episodes.map(episode =>{
         return `
-        <li>${pet.name} (${pet.species})</li>
+        <li>${episode.name} - (${episode.air_date})</li>
         `
 
     }).join('')
-    petsList.innerHTML = petHtml
+    episodesList.innerHTML = episodeHtml
 }
